@@ -24,7 +24,7 @@ const SignupForm = ({navigation}) => {
             const data = await response.json()
             const img =  data.results[0].picture.large
             const Authuser  = await firebase.auth().createUserWithEmailAndPassword(email,password);
-            await firebase.firestore().collection('/users').add({
+            await firebase.firestore().collection('/users').doc(Authuser.user.email).set({
                         owner_id: Authuser.user.uid,
                         username:username,
                         email:email,
@@ -38,7 +38,6 @@ const SignupForm = ({navigation}) => {
         } catch (error) {
             Alert.alert("🔥 Signup Failed", error.message)
             setLoading(false)
-
         }
     }
     return (

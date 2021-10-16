@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, Image, StyleSheet } from 'react-native'
 import LoginForm from '../components/loginscreen/LoginForm'
 
-export default function LoginScreen() {
+export default function LoginScreen({navigation}) {
     return (
         <View style={styles.container}>
             <View style={styles.logoContainer}>
@@ -13,7 +13,7 @@ export default function LoginScreen() {
                 }} />
             </View>
             {/* loginform */}
-            <LoginForm />
+            <LoginForm navigation={navigation} />
         </View>
     )
 }

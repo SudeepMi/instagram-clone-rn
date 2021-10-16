@@ -53,7 +53,7 @@ local.properties
 node_modules/
 npm-debug.log
 yarn-error.log
-
+firebase.js
 # BUCK
 buck-out/
 \.buckd/

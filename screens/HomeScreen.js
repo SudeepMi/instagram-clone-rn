@@ -24,7 +24,7 @@ export default function HomeScreen({navigation}) {
         <Stories />
         <ScrollView showsVerticalScrollIndicator={false}>
         { posts.map((post,key)=>{
-            return <Post post={post} key={key} />
+            return <Post post={post} key={key} navigation={navigation} />
         }) }
         
         </ScrollView>

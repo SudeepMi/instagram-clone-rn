@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
         padding:10
     },
     wrapper:{
-        position:'absolute',
+        // position:'absolute',
         width:'100%',
         bottom:'0%',
         zIndex:999,

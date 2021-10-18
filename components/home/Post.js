@@ -5,12 +5,13 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import firebase from '../../firebase';
 
 const handleLike = post =>{
+   
     const currentLikeStatus = !post?.likes_by_users?.includes(
         firebase.auth().currentUser.email
     )
 
     firebase.firestore().collection('users')
-    .doc( firebase.auth().currentUser.email)
+    .doc( post.owner_email )
     .collection('posts')
     .doc(post.id)
     .update({
@@ -20,7 +21,7 @@ const handleLike = post =>{
     }).catch(err=>console.log(err))   
 }
 
-export default function Post({post}) {
+export default function Post({post, navigation}) {
     
     return (
         <View style={{marginBottom:10}}>
@@ -29,7 +30,7 @@ export default function Post({post}) {
            <PostImage post={post} />
            <View style={{marginHorizontal:10, marginTop:30}}>
            <PostFooter post={post} />
-           <Likes post={post} />
+           <Likes post={post} navigation={navigation} />
            <Caption post={post} />
            <CommentSection post={post} />
            <Comments post={post} />
@@ -114,17 +115,21 @@ const Icon =({imgStyle, imgUrl})=>(
     </TouchableOpacity>
 )
 
-const Likes = ({post}) =>(
-    <Text style={{color:'white', fontWeight:"bold"}}>
-        { new String(post.likes_by_users?.length || 0).toLocaleString('en')} Likes
+const Likes = ({post, navigation}) =>(
+    <TouchableOpacity onPress={()=>{
+        navigation.push('LikesScreen',post)
+    }}>
+        <Text style={{color:'white', fontWeight:"bold"}}>
+           { post.likes_by_users?.length > 1 ? "Liked by "+post.likes_by_users[0]+" and "+ Number(post.likes_by_users?.length-1) + " others": new String(post.likes_by_users?.length || 0).toLocaleString('en') + " Likes" }
         </Text>
+    </TouchableOpacity>
 )
 
 
 const Caption = ({post}) =>(
-    <Text style={{color:'white'}}>
+    <Text style={{color:'white', marginVertical:2}}>
         <Text style={{fontWeight:'bold'}}>{post.user}</Text>
-        <Text style={{marginLeft:'10'}}> {' '}{post.caption}</Text>
+        <Text style={{marginLeft:'10', color:'#a9b0ba'}}> {' '}{post.caption}</Text>
     </Text>
 )
 
@@ -160,7 +165,7 @@ const styles = StyleSheet.create({
         width:40,
         height:40,
         borderRadius:50,
-        borderWidth:3,
+        borderWidth:1,
         marginLeft:15,
         borderColor:'green'
     },
@@ -170,7 +175,8 @@ const styles = StyleSheet.create({
     FooterIcons:{
         width:20,
         height:20,
-        padding:0
+        padding:0,
+        marginBottom:8
     },
     leftFooterIconCOntainer:{
         flexDirection:'row',
